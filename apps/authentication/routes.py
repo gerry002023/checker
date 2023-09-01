@@ -211,11 +211,11 @@ def gate3():
     # semaphore = user_semaphores.setdefault(userid, threading.Semaphore(15))
     # semaphore.acquire()
     # try:
-    gate = ['fdata01', 'fdata02', 'fdata03', 'fdata04', 'fdata05', 'fdata06', 'fdata07']   
-    gate = random.choice(gate)
-    print(gate)
+    # gate = ['fdata01', 'fdata02', 'fdata03', 'fdata04', 'fdata05', 'fdata06', 'fdata07']   
+    # gate = random.choice(gate)
+    # print(gate)
     value = request.form.get('value')
-    reqUrl = f"https://ccn-{gate}.up.railway.app/runserver/"
+    reqUrl = f"https://backend-gate1.up.railway.app/runserver/"
     headersList = {
     "Accept": "*/*",
     "User-Agent": "Thunder Client (https://www.thunderclient.com)",
