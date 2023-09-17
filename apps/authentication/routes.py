@@ -208,7 +208,7 @@ def gate2():
 def gate3():
     userid = request.form.get('user_id')
     userid = current_user.get_id()
-    semaphore = user_semaphores.setdefault(userid, threading.Semaphore(15))
+    semaphore = user_semaphores.setdefault(userid, threading.Semaphore(8))
     semaphore.acquire()
     try:
         # gate = ['fdata01', 'fdata02', 'fdata03', 'fdata04', 'fdata05', 'fdata06', 'fdata07']   
