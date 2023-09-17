@@ -207,32 +207,31 @@ def gate2():
 @blueprint.route('/gate3', methods=['POST'])
 def gate3():
     userid = request.form.get('user_id')
-    userid = current_user.get_id()
-    semaphore = user_semaphores.setdefault(userid, threading.Semaphore(8))
+    # userid = current_user.get_id()
+    semaphore = user_semaphores.setdefault(userid, threading.Semaphore(5))
     semaphore.acquire()
     try:
-        # gate = ['fdata01', 'fdata02', 'fdata03', 'fdata04', 'fdata05', 'fdata06', 'fdata07']   
+        # gate = ['fortis1', 'fortis2', 'fortis3', 'fortis4', 'fortis5', 'fortis6', 'fortis7', 'fortis8', 'fortis9', 'fortis10', 'fortis11', 'fortis12', 'fortis13']
         # gate = random.choice(gate)
         # print(gate)
         value = request.form.get('value')
-        reqUrl = "https://backend-01.up.railway.app/runserver/"
+        # reqUrl = f"https://CVV-{gate}.up.railway.app/runserver/"
+        reqUrl = "https://charge-fortis1.up.railway.app/runserver/"
         headersList = {
         "Accept": "*/*",
         "User-Agent": "Thunder Client (https://www.thunderclient.com)",
         "Content-Type": "application/json" 
         }
-            
+        
         payload = json.dumps({"userinfo": "your_user_info_here",
-                                "remarks": "your_remarks_here",
-                                "card": value})
+                              "remarks": "your_remarks_here",
+                              "card": value})
         response = requests.request("POST", reqUrl, data=payload,  headers=headersList)
         time.sleep(1)
-        
+        message = find_between(response.text, '"message":"', '"')
     
     finally:
-        print("check done")
         semaphore.release()
-        message = find_between(response.text, '"message":"', '"')
     # message = response.json()['message']
     print(response.text)
     print(value)
