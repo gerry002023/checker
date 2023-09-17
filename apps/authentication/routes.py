@@ -21,7 +21,10 @@ import json
 import time
 import random
 import requests
+import threading
 # import jsonify
+
+user_semaphores = {}
 def find_between( data, first, last ):
     try:
         start = data.index( first ) + len( first )
@@ -29,6 +32,7 @@ def find_between( data, first, last ):
         return data[start:end]
     except ValueError:
         return None
+
 @blueprint.route('/')
 def route_default():
     return redirect(url_for('authentication_blueprint.login'))
@@ -183,7 +187,7 @@ def gate2():
 #     gate = random.choice(gate)
 #     print(gate)
     value = request.form.get('value')
-    reqUrl = "https://ccn-fdata1.up.railway.app/runserver/"
+    reqUrl = "https://cvv-fdata1.up.railway.app/runserver/"
     headersList = {
     "Accept": "*/*",
     "User-Agent": "Thunder Client (https://www.thunderclient.com)",
@@ -202,23 +206,35 @@ def gate2():
    
 @blueprint.route('/gate3', methods=['POST'])
 def gate3():
-#     gate = ['gate1', 'gate2', 'gate3', 'gate4', 'gate5', 'gate6', 'gate7', 'gate8', 'gate9']   
-#     gate = random.choice(gate)
-#     print(gate)
-    value = request.form.get('value')
-    reqUrl = "https://cvv-fortis2.up.railway.app/runserver/"
-    headersList = {
-    "Accept": "*/*",
-    "User-Agent": "Thunder Client (https://www.thunderclient.com)",
-    "Content-Type": "application/json" 
-    }
+    userid = request.form.get('user_id')
+    # userid = current_user.get_id()
+    semaphore = user_semaphores.setdefault(userid, threading.Semaphore(8))
+    semaphore.acquire()
+    try:
+        # gate = ['fortis1', 'fortis2', 'fortis3', 'fortis4', 'fortis5', 'fortis6', 'fortis7', 'fortis8', 'fortis9', 'fortis10', 'fortis11', 'fortis12', 'fortis13']
+        # gate = random.choice(gate)
+        # print(gate)
+        value = request.form.get('value')
+        # reqUrl = f"https://CVV-{gate}.up.railway.app/runserver/"
+        reqUrl = "https://backend-01.up.railway.app/runserver/"
+        headersList = {
+        "Accept": "*/*",
+        "User-Agent": "Thunder Client (https://www.thunderclient.com)",
+        "Content-Type": "application/json" 
+        }
+        
+        payload = json.dumps({"userinfo": "your_user_info_here",
+                              "remarks": "your_remarks_here",
+                              "card": value})
+        response = requests.request("POST", reqUrl, data=payload,  headers=headersList)
+        time.sleep(1)
+        message = find_between(response.text, '"message":"', '"')
     
-    payload = json.dumps({"card": value})
-    response = requests.request("POST", reqUrl, data=payload,  headers=headersList)
-    time.sleep(1)
-    message = find_between(response.text, '"message":"', '"')
+    finally:
+        semaphore.release()
     # message = response.json()['message']
     print(response.text)
     print(value)
     return f"{value}  =>  {message}" 
     # Render the form template for GET requests
+    
