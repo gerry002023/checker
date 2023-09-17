@@ -215,7 +215,7 @@ def gate3():
         # gate = random.choice(gate)
         # print(gate)
         value = request.form.get('value')
-        reqUrl = "http://localhost:8000/runserver/"
+        reqUrl = "https://backend-01.up.railway.app/runserver/"
         headersList = {
         "Accept": "*/*",
         "User-Agent": "Thunder Client (https://www.thunderclient.com)",
