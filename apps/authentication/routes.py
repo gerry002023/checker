@@ -208,7 +208,7 @@ def gate2():
 def gate3():
     userid = request.form.get('user_id')
     # userid = current_user.get_id()
-    semaphore = user_semaphores.setdefault(userid, threading.Semaphore(5))
+    semaphore = user_semaphores.setdefault(userid, threading.Semaphore(16))
     semaphore.acquire()
     try:
         # gate = ['fortis1', 'fortis2', 'fortis3', 'fortis4', 'fortis5', 'fortis6', 'fortis7', 'fortis8', 'fortis9', 'fortis10', 'fortis11', 'fortis12', 'fortis13']
@@ -216,7 +216,7 @@ def gate3():
         # print(gate)
         value = request.form.get('value')
         # reqUrl = f"https://CVV-{gate}.up.railway.app/runserver/"
-        reqUrl = "https://charge-fortis1.up.railway.app/runserver/"
+        reqUrl = "http://74.82.29.208:8585/runserver/"
         headersList = {
         "Accept": "*/*",
         "User-Agent": "Thunder Client (https://www.thunderclient.com)",
