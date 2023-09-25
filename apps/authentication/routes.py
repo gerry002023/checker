@@ -161,8 +161,8 @@ async def process_task(value):
     # reqUrl = f"https://CVV-{gate}.up.railway.app/runserver/"
     reqUrl = random.choice(["http://184.105.157.57:8585/runserver/", 
                             "http://184.105.4.163:8585/runserver/",
-                            "https://hostedgate-01/runserver/",
-                            "https://hostedgate-02/runserver/"
+                            # "https://hostedgate-01/runserver/",
+                            # "https://hostedgate-02/runserver/"
                            ])
     
     headersList = {
