@@ -17,6 +17,6 @@ blinker==1.4
 pyOpenSSL
 mysqlclient
 uvicorn
-
+flask[async]
 flask_mysqldb
 psycopg2-binary
