@@ -161,6 +161,7 @@ async def process_task(value):
     # reqUrl = f"https://CVV-{gate}.up.railway.app/runserver/"
     reqUrl = random.choice(["https://8585-vogler-freegamesclaimer-ko3sbr85ysc.ws-us105.gitpod.io/runserver/", 
                             "https://8585-gerry002023-bincheck-5cbzxb29b48.ws-us105.gitpod.io/runserver/",
+                            "https://9p40drfaxslkrh-8585.proxy.runpod.net/runserver/",
                             # "https://hostedgate-01/runserver/",
                             # "https://hostedgate-02/runserver/"
                            ])
