@@ -159,8 +159,8 @@ def internal_error(error):
 async def process_task(value):
     # value = request.form.get('value')
     # reqUrl = f"https://CVV-{gate}.up.railway.app/runserver/"
-    reqUrl = random.choice(["http://184.105.157.57:8585/runserver/", 
-                            "http://184.105.4.163:8585/runserver/",
+    reqUrl = random.choice(["http://gate01-production.up.railway.app/runserver/", 
+                            "http://gate02-production.up.railway.app/runserver/",
                             # "https://hostedgate-01/runserver/",
                             # "https://hostedgate-02/runserver/"
                            ])
