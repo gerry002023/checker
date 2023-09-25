@@ -158,8 +158,8 @@ def internal_error(error):
 
 async def process_task(value):
     # value = request.form.get('value')
-    reqUrl = random.choice(["http:/184.105.157.57:8585/runserver/", "http:/184.105.4.163:8585/runserver/"])
-    # reqUrl = "https://backend-qgiv01.up.railway.app/runserver/"
+    # reqUrl = f"https://CVV-{gate}.up.railway.app/runserver/"
+    reqUrl = random.choice(["http://184.105.157.57:8585/runserver/", "http://184.105.4.163:8585/runserver/"])
     headersList = {
     "Accept": "*/*",
     "User-Agent": "Thunder Client (https://www.thunderclient.com)",
