@@ -163,7 +163,7 @@ async def process_task(value):
                             #"https://8585-vogler-freegamesclaimer-ko3sbr85ysc.ws-us105.gitpod.io/runserver/", 
                             #"https://8585-gerry002023-bincheck-5cbzxb29b48.ws-us105.gitpod.io/runserver/",
                             "https://9p40drfaxslkrh-8585.proxy.runpod.net/runserver/",
-                            # "https://hostedgate-01/runserver/",
+                            "https://unodh7yj4ertba-8585.proxy.runpod.net/runserver/",
                             # "https://hostedgate-02/runserver/"
                            ])
     
