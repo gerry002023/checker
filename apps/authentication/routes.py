@@ -178,6 +178,7 @@ async def process_task(value):
     response = requests.request("POST", reqUrl, data=payload,  headers=headersList)
     time.sleep(1)
     message = find_between(response.text, '"message":"', '"')
+    print(message)
     return value, message
 
 async def worker(queue, results):
