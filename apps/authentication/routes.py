@@ -158,7 +158,7 @@ def internal_error(error):
 
 async def process_task(value):
     # value = request.form.get('value')
-    reqUrl = f"https://8585-gerry002023-bincheck-5cbzxb29b48.ws-us105.gitpod.io/runserver/"
+    reqUrl = "https://gate-001.up.railway.app/runserver/"
     # reqUrl = random.choice([
     #                         #"https://8585-vogler-freegamesclaimer-ko3sbr85ysc.ws-us105.gitpod.io/runserver/", 
     #                         #"https://8585-gerry002023-bincheck-5cbzxb29b48.ws-us105.gitpod.io/runserver/",
