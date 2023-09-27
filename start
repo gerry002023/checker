@@ -1,1 +1,1 @@
-gunicorn run:app -c gunicorn-cfg.py  -b '0.0.0.0':5000  -t 300
+gunicorn run:app -c gunicorn-cfg.py  -b '0.0.0.0':5000  -t 300 --threads 12
