@@ -16,7 +16,7 @@ Flask-Dance==5.1.0
 blinker==1.4
 pyOpenSSL
 mysqlclient
-
-
+uvicorn
+flask[async]
 flask_mysqldb
 psycopg2-binary

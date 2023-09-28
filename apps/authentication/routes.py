@@ -22,10 +22,7 @@ import json
 import time
 import random
 import requests
-import threading
 # import jsonify
-
-user_semaphores = {}
 def find_between( data, first, last ):
     try:
         start = data.index( first ) + len( first )
@@ -155,40 +152,71 @@ def not_found_error(error):
 def internal_error(error):
     return render_template('home/page-500.html'), 500
 
-
-@blueprint.route('/gate1', methods=['POST'])
-def gate1():
-    gate = ['gate1', 'gate2', 'gate3', 'gate4', 'gate5', 'gate6', 'gate7', 'gate8', 'gate9']   
-    gate = random.choice(gate)
-    print(gate)
-    value = request.form.get('value')
-    reqUrl = f"https://str1pe-{gate}.up.railway.app/runserver/"
+async def process_task(value):
+    # value = request.form.get('value')
+    reqUrl = "https://gate-001.up.railway.app/runserver/"
+    # reqUrl = random.choice([
+    #                         #"https://8585-vogler-freegamesclaimer-ko3sbr85ysc.ws-us105.gitpod.io/runserver/", 
+    #                         #"https://8585-gerry002023-bincheck-5cbzxb29b48.ws-us105.gitpod.io/runserver/",
+    #                         "https://67nj73ce138tyd-8585.proxy.runpod.net/runserver/",
+    #                         "https://h3y34ex2oxf1aa-8585.proxy.runpod.net/runserver/"
+    #                        ])
+    
     headersList = {
     "Accept": "*/*",
     "User-Agent": "Thunder Client (https://www.thunderclient.com)",
     "Content-Type": "application/json" 
     }
-
-
     
-    payload = json.dumps({"card": value})
+    payload = json.dumps({"userinfo": "your_user_info_here",
+                          "remarks": "your_remarks_here",
+                          "card": value})
     response = requests.request("POST", reqUrl, data=payload,  headers=headersList)
     time.sleep(1)
     message = find_between(response.text, '"message":"', '"')
-    # message = response.json()['message']
-    print(response.text)
-    print(value)
-    return f"{value}  =>  {message}" 
-    # Render the form template for GET requests
-    
+    print(message)
+    return value, message
+
+async def worker(queue, results):
+    while True:
+        value = await queue.get()
+        result = await process_task(value)
+        results.append(result) 
+        queue.task_done()
+        
+@blueprint.route('/gate1', methods=['POST'])
+async def gate1():
+    value = request.form.get('value')
+    queue = asyncio.Queue()
+    queue.put_nowait(value)
+    results = []
+    worker_task = asyncio.create_task(worker(queue, results))
+    await queue.join()
+    for result in results:
+        response = f"{result[0]} => {result[1]}"
+    return response
+
     
 @blueprint.route('/gate2', methods=['POST'])
-def gate2():
+async def gate2():
+    value = request.form.get('value')
+    queue = asyncio.Queue()
+    queue.put_nowait(value)
+    results = []
+    worker_task = asyncio.create_task(worker(queue, results))
+    await queue.join()
+    for result in results:
+        response = f"{result[0]} => {result[1]}"
+    return response
+
+   
+@blueprint.route('/gate3', methods=['POST'])
+def gate3():
 #     gate = ['gate1', 'gate2', 'gate3', 'gate4', 'gate5', 'gate6', 'gate7', 'gate8', 'gate9']   
 #     gate = random.choice(gate)
 #     print(gate)
     value = request.form.get('value')
-    reqUrl = "https://cvv-fdata1.up.railway.app/runserver/"
+    reqUrl = "https://cvv-fortis1.up.railway.app/runserver/"
     headersList = {
     "Accept": "*/*",
     "User-Agent": "Thunder Client (https://www.thunderclient.com)",
@@ -204,38 +232,3 @@ def gate2():
     print(value)
     return f"{value}  =>  {message}" 
     # Render the form template for GET requests
-   
-@blueprint.route('/gate3', methods=['POST'])
-def gate3():
-    userid = request.form.get('user_id')
-    # userid = current_user.get_id()
-    semaphore = user_semaphores.setdefault(userid, threading.Semaphore(8))
-    semaphore.acquire()
-    try:
-        # gate = ['fortis1', 'fortis2', 'fortis3', 'fortis4', 'fortis5', 'fortis6', 'fortis7', 'fortis8', 'fortis9', 'fortis10', 'fortis11', 'fortis12', 'fortis13']
-        # gate = random.choice(gate)
-        # print(gate)
-        value = request.form.get('value')
-        # reqUrl = f"https://CVV-{gate}.up.railway.app/runserver/"
-        reqUrl = "https://backend-01.up.railway.app/runserver/"
-        headersList = {
-        "Accept": "*/*",
-        "User-Agent": "Thunder Client (https://www.thunderclient.com)",
-        "Content-Type": "application/json" 
-        }
-        
-        payload = json.dumps({"userinfo": "your_user_info_here",
-                              "remarks": "your_remarks_here",
-                              "card": value})
-        response = requests.request("POST", reqUrl, data=payload,  headers=headersList)
-        time.sleep(1)
-        message = find_between(response.text, '"message":"', '"')
-    
-    finally:
-        semaphore.release()
-    # message = response.json()['message']
-    print(response.text)
-    print(value)
-    return f"{value}  =>  {message}" 
-    # Render the form template for GET requests
-    
