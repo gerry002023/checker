@@ -17,6 +17,7 @@ from apps.authentication.forms import LoginForm, CreateAccountForm
 from apps.authentication.models import Users
 from flask import jsonify
 from apps.authentication.util import verify_pass
+import os
 import json
 import time
 import random

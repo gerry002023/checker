@@ -35,7 +35,6 @@ class Config(object):
     DB_HOST     = os.getenv('DB_HOST'     , None)
     DB_PORT     = os.getenv('DB_PORT'     , None)
     DB_NAME     = os.getenv('DB_NAME'     , None)
-
     USE_SQLITE  = True 
 
     # try to set up a Relational DBMS
