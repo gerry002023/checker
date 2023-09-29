@@ -190,7 +190,7 @@
 
   // Split the array into chunks of size 5
   const chunks = linhaenviar.reduce((resultArray, item, index) => { 
-  const chunkIndex = Math.floor(index / 10);
+  const chunkIndex = Math.floor(index / 5);
   
   if(!resultArray[chunkIndex]) {
       resultArray[chunkIndex] = []; // start a new chunk
