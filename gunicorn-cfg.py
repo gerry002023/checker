@@ -1,7 +1,7 @@
 bind = '0.0.0.0:5000'
-workers = 2
-threads = 8
-timeout = 500
+workers = 1
+threads = 16
+timeout = 600
 debug = False
 capture_output = True
 accesslog = '-'
